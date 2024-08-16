@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ar">
 <head>
@@ -6,16 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>توليد الأكواد</title>
     <script>
+        // استخدام التوكن الجديد
+        const GITHUB_TOKEN = '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';
+
         async function fetchCodes() {
-            const response = await fetch('https://raw.githubusercontent.com/yourusername/yourrepo/main/codes.json');
+            const response = await fetch('https://raw.githubusercontent.com/Boubou2555/yourrepo/main/codes.json');
             return response.json();
         }
 
         async function updateCodes(codes) {
-            const response = await fetch('https://api.github.com/repos/yourusername/yourrepo/contents/codes.json', {
+            const response = await fetch('https://api.github.com/repos/Boubou2555/yourrepo/contents/codes.json', {
                 method: 'PUT',
                 headers: {
-                    'Authorization': 'token YOUR_GITHUB_TOKEN',
+                    'Authorization': `token ${GITHUB_TOKEN}`,
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
