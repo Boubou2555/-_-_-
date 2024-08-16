@@ -22,7 +22,8 @@
                 },
                 body: JSON.stringify({
                     message: 'Update codes',
-                    content: btoa(JSON.stringify(codes))
+                    content: btoa(JSON.stringify(codes)),
+                    sha: codes.sha // استخدم SHA الملف السابق لتحديثه
                 })
             });
             return response.json();
@@ -51,6 +52,7 @@
 
             const data = await fetchCodes();
             const availableCodes = data.availableCodes || [];
+            const sha = data.sha; // الحصول على SHA من بيانات JSON
 
             if (availableCodes.length < 20) {
                 alert('لا توجد أكواد كافية.');
@@ -62,7 +64,7 @@
 
             const updatedCodes = availableCodes.slice(20).concat(newCodes);
 
-            await updateCodes({ availableCodes: updatedCodes });
+            await updateCodes({ availableCodes: updatedCodes, sha: sha });
 
             document.getElementById('codes').innerText = usedCodes.join('\n');
             document.getElementById('remaining').innerText = `الأكواد المتاحة: ${updatedCodes.length}`;
@@ -74,4 +76,4 @@
     <pre id="codes"></pre>
     <p id="remaining">الأكواد المتاحة: </p>
 </body>
-</html> 
+</html>
