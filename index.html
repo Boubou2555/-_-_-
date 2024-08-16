@@ -13,7 +13,7 @@
             return response.json();
         }
 
-        async function updateCodes(codes) {
+        async function updateCodes(codes, sha) {
             const response = await fetch('https://api.github.com/repos/Boubou2555/rico/contents/codes.json', {
                 method: 'PUT',
                 headers: {
@@ -23,7 +23,7 @@
                 body: JSON.stringify({
                     message: 'Update codes',
                     content: btoa(JSON.stringify(codes)),
-                    sha: codes.sha // استخدم SHA الملف السابق لتحديثه
+                    sha: sha // استخدم SHA الملف السابق لتحديثه
                 })
             });
             return response.json();
@@ -64,15 +64,27 @@
 
             const updatedCodes = availableCodes.slice(20).concat(newCodes);
 
-            await updateCodes({ availableCodes: updatedCodes, sha: sha });
+            await updateCodes({ availableCodes: updatedCodes }, sha);
 
             document.getElementById('codes').innerText = usedCodes.join('\n');
             document.getElementById('remaining').innerText = `الأكواد المتاحة: ${updatedCodes.length}`;
+            document.getElementById('copyButton').style.display = 'inline'; // إظهار زر النسخ
+        }
+
+        function copyToClipboard() {
+            const codes = document.getElementById('codes').innerText;
+            navigator.clipboard.writeText(codes).then(() => {
+                alert('تم نسخ الأكواد إلى الحافظة!');
+                // بعد النسخ يمكنك إضافة خيار لحذف الأكواد من JSON هنا إذا لزم الأمر.
+            }).catch(err => {
+                alert('فشل في نسخ الأكواد: ' + err);
+            });
         }
     </script>
 </head>
 <body>
     <button onclick="handleGenerateClick()">توليد الأكواد</button>
+    <button id="copyButton" style="display: none;" onclick="copyToClipboard()">نسخ الأكواد</button>
     <pre id="codes"></pre>
     <p id="remaining">الأكواد المتاحة: </p>
 </body>
