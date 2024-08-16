@@ -4,6 +4,46 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>توليد الأكواد</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #333;
+            color: #eee;
+            text-align: center;
+            padding: 20px;
+        }
+
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin: 5px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        #codes {
+            white-space: pre-wrap;
+            margin: 20px auto;
+            max-width: 80%;
+            text-align: left;
+            background-color: #222;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-y: auto;
+        }
+
+        .blur {
+            filter: blur(5px);
+            opacity: 0.5;
+        }
+    </style>
     <script>
         // استخدام التوكن الجديد
         const GITHUB_TOKEN = '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';
@@ -66,7 +106,11 @@
 
             await updateCodes({ availableCodes: updatedCodes }, sha);
 
-            document.getElementById('codes').innerText = usedCodes.join('\n');
+            const codesContainer = document.getElementById('codes');
+            codesContainer.innerHTML = usedCodes.map((code, index) => 
+                `<div class="${index < 10 ? '' : 'blur'}">${code}</div>`
+            ).join('\n');
+            
             document.getElementById('remaining').innerText = `الأكواد المتاحة: ${updatedCodes.length}`;
             document.getElementById('copyButton').style.display = 'inline'; // إظهار زر النسخ
         }
