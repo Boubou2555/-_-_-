@@ -37,11 +37,39 @@
             padding: 10px;
             border-radius: 5px;
             overflow-y: auto;
+            position: relative;
+        }
+
+        .code-item {
+            display: inline-block;
+            width: 100%;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
         }
 
         .blur {
             filter: blur(5px);
             opacity: 0.5;
+        }
+
+        #copyButton {
+            display: none;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        #copyButton:hover {
+            background-color: #0056b3;
         }
     </style>
     <script>
@@ -108,7 +136,7 @@
 
             const codesContainer = document.getElementById('codes');
             codesContainer.innerHTML = usedCodes.map((code, index) => 
-                `<div class="${index < 10 ? '' : 'blur'}">${code}</div>`
+                `<div class="code-item ${index >= 10 ? 'blur' : ''}">${code}</div>`
             ).join('\n');
             
             document.getElementById('remaining').innerText = `الأكواد المتاحة: ${updatedCodes.length}`;
@@ -119,7 +147,6 @@
             const codes = document.getElementById('codes').innerText;
             navigator.clipboard.writeText(codes).then(() => {
                 alert('تم نسخ الأكواد إلى الحافظة!');
-                // بعد النسخ يمكنك إضافة خيار لحذف الأكواد من JSON هنا إذا لزم الأمر.
             }).catch(err => {
                 alert('فشل في نسخ الأكواد: ' + err);
             });
@@ -128,7 +155,7 @@
 </head>
 <body>
     <button onclick="handleGenerateClick()">توليد الأكواد</button>
-    <button id="copyButton" style="display: none;" onclick="copyToClipboard()">نسخ الأكواد</button>
+    <button id="copyButton" onclick="copyToClipboard()">نسخ الأكواد</button>
     <pre id="codes"></pre>
     <p id="remaining">الأكواد المتاحة: </p>
 </body>
